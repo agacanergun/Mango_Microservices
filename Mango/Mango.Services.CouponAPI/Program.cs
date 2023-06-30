@@ -27,5 +27,20 @@ app.UseHttpsRedirection();
 app.UseAuthorization();
 
 app.MapControllers();
-
+ApplyMigration(); //uygulanmamýþ migrationlarýn kontrolü
 app.Run();
+
+//eðer uygulanmýþ bir migration var ama update edilmemiþ yani veritabanýna yansýlýtmamýþsa
+//veritabanýna uygulama baþlatýldýðýnda yansýtýr. Yani veritabanýný update eder.
+void ApplyMigration()
+{
+    using (var scope = app.Services.CreateScope())
+    {
+        var _db=scope.ServiceProvider.GetRequiredService<AppDbContext>();
+
+        if (_db.Database.GetPendingMigrations().Count() > 0)
+        {
+            _db.Database.Migrate();
+        }
+    }
+}
