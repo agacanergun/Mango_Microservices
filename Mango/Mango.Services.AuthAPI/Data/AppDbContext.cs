@@ -6,6 +6,7 @@ namespace Mango.Services.AuthAPI.Data
     public class AppDbContext : IdentityDbContext
     {
         //2.25
+
         public AppDbContext(DbContextOptions<AppDbContext> options) : base(options)
         {
         }
